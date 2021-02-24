@@ -1,14 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="style.css" />
-  <script src="main.js" defer></script>
-  <title>FSA Boilerplate</title>
-</head>
-<body>
-  <div id="app"></div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="main.js" defer></script>
+    <script type="text/babel"></script>
+    <title>Grab Bag</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+  </head>
+
+  <style>
+    body {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container > * {
+      flex: 2;
+    }
+    .container > * {
+      margin: 1rem;
+    }
+    .map {
+      height: 300;
+    }
+    li {
+      cursor: pointer;
+    }
+    .favorite {
+      background-color: dodgerblue;
+      color: cornsilk;
+    }
+    .marker-btn {
+      background: white;
+      border: none;
+      cursor: pointer;
+    }
+    .marker-btn img {
+      width: 15px;
+      height: 20px;
+    }
+  </style>
+  <body>
+    <div id="app"></div>
+  </body>
 </html>
