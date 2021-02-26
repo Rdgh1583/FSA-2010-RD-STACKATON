@@ -1,15 +1,13 @@
 import React from "react";
-import Restaurants from "./Restaurants";
-import Restaurant from "./Restaurant";
+import Restaurants from "./components/Restaurants";
+import Restaurant from "./components/Restaurant";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/" component={Restaurants} exact />
-        <Route path="/places/:id" component={Restaurant} exact />
-      </Switch>
+      <Route path="/" component={Restaurants} exact />
+      <Route path="/places/:id" component={Restaurant} exact />
     </Router>
   );
 };

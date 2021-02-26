@@ -1,6 +1,7 @@
 import React from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import Button from "@material-ui/core/Button";
+import { Snackbar } from "@material-ui/core";
 
 export default function Map(props) {
   const [viewport, setViewPort] = React.useState({
@@ -11,6 +12,23 @@ export default function Map(props) {
     zoom: 10,
   });
   const [selectedRestaurant, setSelectedRestaurant] = React.useState(null);
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
+  function handleClick() {
+    React.useState({ open: true });
+  }
+  function handleClose() {
+    React.useState({ open: false });
+  }
+
+  React.useEffect(() => {
+    const listener = (e) => {
+      if (e.key === "Escape") {
+        setSelectedRestaurant(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
+  }, []);
 
   return (
     <div>
@@ -19,7 +37,7 @@ export default function Map(props) {
         mapboxApiAccessToken={
           "pk.eyJ1IjoicmRlbWFubyIsImEiOiJja2xpOGxzcTgyZnRiMm9wY2JvaXVjeTN3In0.r38uSvzLc3pPEAztrwFJdA"
         }
-        mapStyle="mapbox://styles/rdemano/cklilz9gu02it17o8aayfruox"
+        mapStyle="mapbox://styles/rdemano/ckllk3wu21eza17pap5jj3lrq"
         onViewportChange={(viewport) => {
           setViewPort(viewport);
         }}
@@ -39,7 +57,7 @@ export default function Map(props) {
               className="marker-btn"
               color="white"
             >
-              <img src="/scooter.svg" />
+              <img src="/spider.jpg" />
             </button>
           </Marker>
         ))}
@@ -47,15 +65,40 @@ export default function Map(props) {
           <Popup
             latitude={Number(selectedRestaurant.latitude)}
             longitude={Number(selectedRestaurant.longitude)}
-            onClose={() => {
-              setSelectedRestaurant(null);
-            }}
+            // onClose={() => {
+            //   setSelectedRestaurant(null);
+            // }}
           >
-            <div>
+            <div className="popup">
               <h3>{selectedRestaurant.name}</h3>
               <p> Bags left: {selectedRestaurant.stock}</p>
               <p> Pick Up: {selectedRestaurant.time}</p>
               <p> Price: {selectedRestaurant.price}</p>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => setSnackOpen(true)}
+              >
+                Grab it
+              </Button>
+              <Snackbar
+                style={{ padding: "2rem" }}
+                anchorOrigin={{ horizontal: "center", vertical: "top" }}
+                open={snackOpen}
+                message="KaAAAZZaaaaMMM!!!!!"
+                autoHideDuration={2000}
+                onClose={() => setSnackOpen(false)}
+                style={{ backgroundColor: "#ffccaa" }}
+              ></Snackbar>
+              <div>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  href={`/places/${selectedRestaurant.id}`}
+                >
+                  Info
+                </Button>
+              </div>
             </div>
           </Popup>
         )}

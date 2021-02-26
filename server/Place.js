@@ -6,6 +6,8 @@ module.exports = [
     stock: 5,
     time: "7-9pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Osteria Morini",
@@ -14,6 +16,8 @@ module.exports = [
     stock: 2,
     time: "3-5pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Nobu Downtown",
@@ -22,6 +26,8 @@ module.exports = [
     stock: 1,
     time: "3-5pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Blue Ribbon Sushi",
@@ -30,6 +36,8 @@ module.exports = [
     stock: 4,
     time: "4-5pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Dig",
@@ -38,6 +46,8 @@ module.exports = [
     stock: 3,
     time: "3-4pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Momofuku Noodle Bar",
@@ -46,6 +56,8 @@ module.exports = [
     stock: 2,
     time: "8-10pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Rao's",
@@ -54,6 +66,8 @@ module.exports = [
     stock: 2,
     time: "8-10pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "La Maison du Chocolat Madison",
@@ -62,6 +76,8 @@ module.exports = [
     stock: 1,
     time: "8-10pm",
     price: "$6.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Carbone",
@@ -70,6 +86,8 @@ module.exports = [
     stock: 2,
     time: "8-10pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Ippudo NY",
@@ -78,6 +96,8 @@ module.exports = [
     stock: 2,
     time: "7-11pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Mokyo",
@@ -86,6 +106,8 @@ module.exports = [
     stock: 2,
     time: "8-10pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
   {
     name: "Atoboy",
@@ -94,5 +116,7 @@ module.exports = [
     stock: 2,
     time: "8-10pm",
     price: "$4.99",
+    amount: 0,
+    order: 0,
   },
 ];

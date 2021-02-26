@@ -13,24 +13,54 @@ app.use(express.json());
 app.use(express.static(PUBLIC_PATH));
 app.use(express.static(DIST_PATH));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/index.html"));
-// });
+const db = new Sequelize(
+  process.env.DATABASE_URL || "postgres://localhost:5432/sample"
+);
 
-// const MAP_API_KEY =
-//   "pk.eyJ1IjoicmRlbWFubyIsImEiOiJja2xpOGxzcTgyZnRiMm9wY2JvaXVjeTN3In0.r38uSvzLc3pPEAztrwFJdA";
-
-// mapboxgl.accessToken = MAP_API_KEY;
-
-app.get("/", async (req, res, next) => {
-  res.render(path.join(__dirname, "index.html"));
+const Place = db.define("place", {
+  name: STRING,
+  latitude: DECIMAL,
+  longitude: DECIMAL,
+  stock: INTEGER,
+  time: STRING,
+  price: STRING,
+  amount: INTEGER,
+  order: INTEGER,
+  isFavorite: {
+    type: BOOLEAN,
+    defaultValue: false,
+  },
 });
 
-// Object.entries(require("../secrets.js")).forEach(
-//   ([key, value]  {process.env[key] = value})
-// );
-
-// console.log(MAP_API_KEY);
+const syncAndSeed = async () => {
+  await db.sync({ force: true });
+  await Promise.all(
+    require("./Place").map(
+      ({
+        stock,
+        time,
+        isFavorite,
+        name,
+        location: [longitude, latitude],
+        price,
+        amount,
+        order,
+      }) => {
+        return Place.create({
+          name,
+          latitude,
+          longitude,
+          isFavorite,
+          stock,
+          time,
+          price,
+          amount,
+          order,
+        });
+      }
+    )
+  );
+};
 
 app.get("/api/places", async (req, res, next) => {
   try {
@@ -43,10 +73,6 @@ app.get("/api/places", async (req, res, next) => {
   } catch (ex) {
     next(ex);
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on PORT: ${PORT}`);
 });
 
 app.get("/api/places/:id", async (req, res, next) => {
@@ -69,66 +95,41 @@ app.put("/api/places/:id", async (req, res, next) => {
   }
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Server listening on PORT: ${PORT}`);
+// router.put('/:orderId', async (req, res, next) => {
+//   try {
+//     const orderId = req.params.orderId;
+//     const plantId = req.body.plantId;
+//     const amount = req.body.amount < 1 ? 0 : req.body.amount;
+
+//     const order = await Order.findByPk(orderId);
+//     if (amount === 0) {
+//       const plant = await Plant.findByPk(plantId);
+//       await order.removePlant(plant);
+//     } else {
+//       const lineItem = await LineItem.findOne({
+//         where: {
+//           orderId: orderId,
+//           plantId: plantId,
+//         },
+//       });
+
+//       lineItem.amount = amount;
+//       await lineItem.save();
+//     }
+//     const plants = await order.getPlants();
+//     const cart = {
+//       id: order.id,
+//       plants,
+//     };
+//     res.status(201).send(cart);
+//   } catch (err) {
+//     next(err);
+//   }
 // });
 
-const db = new Sequelize(
-  process.env.DATABASE_URL || "postgres://localhost:5432/sample"
-);
-
-const Place = db.define("place", {
-  name: STRING,
-  latitude: DECIMAL,
-  longitude: DECIMAL,
-  stock: INTEGER,
-  time: STRING,
-  price: STRING,
-  isFavorite: {
-    type: BOOLEAN,
-    defaultValue: false,
-  },
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
-
-const syncAndSeed = async () => {
-  await db.sync({ force: true });
-  // const places = await Promise.all([
-  //   Place.create({
-  //     name: "KATZ",
-  //     lat: 40.722195,
-  //     lng: -73.98748,
-  //     isFavorite: "false",
-  //   }),
-  //   Place.create({
-  //     name: "MET",
-  //     lat: 40.778965,
-  //     lng: -73.962311,
-  //     isFavorite: "true",
-  //   }),
-  // ]);
-  await Promise.all(
-    require("./db/Place").map(
-      ({
-        stock,
-        time,
-        isFavorite,
-        name,
-        location: [longitude, latitude],
-        price,
-      }) => {
-        return Place.create({
-          name,
-          latitude,
-          longitude,
-          isFavorite,
-          stock,
-          time,
-          price,
-        });
-      }
-    )
-  );
-};
 
 const setUp = async () => {
   try {
@@ -141,8 +142,27 @@ const setUp = async () => {
 
 setUp();
 
+app.listen(PORT, () => {
+  console.log(`Server listening on PORT: ${PORT}`);
+});
+
 module.exports = {
   db,
   syncAndSeed,
   Place,
 };
+
+// const MAP_API_KEY =
+//   "pk.eyJ1IjoicmRlbWFubyIsImEiOiJja2xpOGxzcTgyZnRiMm9wY2JvaXVjeTN3In0.r38uSvzLc3pPEAztrwFJdA";
+
+// mapboxgl.accessToken = MAP_API_KEY;
+
+// app.get("/", async (req, res, next) => {
+//   res.render(path.join(__dirname, "index.html"));
+// });
+
+// Object.entries(require("../secrets.js")).forEach(
+//   ([key, value]  {process.env[key] = value})
+// );
+
+// console.log(MAP_API_KEY);
