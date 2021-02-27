@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { fetchPlaces } from "../store/places";
 import { Snackbar } from "@material-ui/core";
 // import { Alert } from "@material-ui/lab";
+import OpenForm from "./OpenForm";
 
 // import { makeStyles } from "@material-ui/core/styles";
 // import GridList from "@material-ui/core/GridList";
@@ -99,6 +100,18 @@ class Restaurants extends React.Component {
     return (
       <div className="container">
         <h1>Spidey's Grab Bag</h1>
+        <h2>SAVE FOOD HELP THE PLANET</h2>
+        <h2>
+          <Link to="/mission">Mission</Link>
+        </h2>
+        <h2>
+          <Link to="/participate">Participate</Link>
+        </h2>
+        <h2>
+          <Link to="/backpack">BackPack</Link>
+        </h2>
+
+        {/* <OpenForm /> */}
         <Map places={places} />
       </div>
     );

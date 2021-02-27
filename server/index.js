@@ -19,17 +19,24 @@ const db = new Sequelize(
 
 const Place = db.define("place", {
   name: STRING,
+  address: {
+    type: STRING,
+    allowNull: true,
+  },
   latitude: DECIMAL,
   longitude: DECIMAL,
+  isFavorite: {
+    type: STRING,
+    defaultValue: false,
+    allowNull: true,
+  },
   stock: INTEGER,
   time: STRING,
   price: STRING,
   amount: INTEGER,
   order: INTEGER,
-  isFavorite: {
-    type: BOOLEAN,
-    defaultValue: false,
-  },
+  phone: STRING,
+  email: STRING,
 });
 
 const syncAndSeed = async () => {
@@ -37,25 +44,31 @@ const syncAndSeed = async () => {
   await Promise.all(
     require("./Place").map(
       ({
+        name,
+        address,
+        location: [longitude, latitude],
+        isFavorite,
         stock,
         time,
-        isFavorite,
-        name,
-        location: [longitude, latitude],
         price,
         amount,
         order,
+        phone,
+        email,
       }) => {
         return Place.create({
           name,
-          latitude,
+          address,
           longitude,
+          latitude,
           isFavorite,
           stock,
           time,
           price,
           amount,
           order,
+          phone,
+          email,
         });
       }
     )
@@ -70,6 +83,15 @@ app.get("/api/places", async (req, res, next) => {
       })
       // await Place.findAll()
     );
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.post("/api/places", async (req, res, next) => {
+  try {
+    res.send(await Place.create(req.body));
+    // await Place.findAll()
   } catch (ex) {
     next(ex);
   }

@@ -71,9 +71,12 @@ export default function Map(props) {
           >
             <div className="popup">
               <h3>{selectedRestaurant.name}</h3>
+              <p> Address: {selectedRestaurant.address}</p>
               <p> Bags left: {selectedRestaurant.stock}</p>
               <p> Pick Up: {selectedRestaurant.time}</p>
               <p> Price: {selectedRestaurant.price}</p>
+              <p> Phone: {selectedRestaurant.phone}</p>
+              <p> Email: {selectedRestaurant.email}</p>
               <Button
                 variant="outlined"
                 size="small"
@@ -88,7 +91,7 @@ export default function Map(props) {
                 message="KaAAAZZaaaaMMM!!!!!"
                 autoHideDuration={2000}
                 onClose={() => setSnackOpen(false)}
-                style={{ backgroundColor: "#ffccaa" }}
+                style={{ backgroundColor: "red" }}
               ></Snackbar>
               <div>
                 <Button

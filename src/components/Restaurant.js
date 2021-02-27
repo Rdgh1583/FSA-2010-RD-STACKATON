@@ -2,9 +2,10 @@ import React from "react";
 import Map from "./Map";
 import Button from "@material-ui/core/Button";
 // // import { Link } from "react-dom";
-import { updatePlace } from "../store/places";
+import { updatePlace, setPlace } from "../store/places";
 import { connect } from "react-redux";
 import { Snackbar } from "@material-ui/core";
+import GrabIt from "./GrabIt";
 
 class Restaurant extends React.Component {
   constructor(props) {
@@ -27,33 +28,46 @@ class Restaurant extends React.Component {
   // this.toggle.bind = this.toggle.bind(this);
 
   async componentDidUpdate(prevProps) {
-    if (prevProps.match.params.id !== this.props.match.id) {
-      const id = this.props.match.params.id * 1;
-      const response = await fetch(`/api/places/${id}`);
-      const place = await response.json();
-      this.setState({
-        place,
-      });
-    }
+    // console.log(prevProps.match.params.id);
+    // console.log(this.props.match.params.id);
+    // if (prevProps.match.params.id !== this.props.match.id) {
+    //   const id = this.props.match.params.id * 1;
+    //   const response = await fetch(`/api/places/${id}`);
+    //   const place = await response.json();
+    //   this.setState({
+    //     place,
+    //   });
+    // }
   }
 
   async componentDidMount() {
     const id = this.props.match.params.id * 1;
     const response = await fetch(`/api/places/${id}`);
     const place = await response.json();
+    console.log(id);
     this.setState({
       place,
     });
+    // console.log(this.props.match.params.id * 1);
+    // const id = this.props.match.params.id * 1;
+    // console.log(id);
+    // const place = await this.props.setPlace(id);
+    // console.log(place);
+    // this.setState({
+    //   place,
+    // });
+    // await this.props.setPlace(id);
   }
 
   render() {
-    // const favorites = places.filter((place) => place.isFavorite);
-    // const center = favorites.length ? favorites[0] : places[0];
-
     const { place } = this.state;
+    console.log(place);
+
     const placeId = place.id;
+    const order = place.order;
     const { open } = this.state;
     const { handleClose, handleClick } = this;
+    // console.log(placeId);
 
     if (!place) {
       return null;
@@ -62,9 +76,12 @@ class Restaurant extends React.Component {
     return (
       <div className="details">
         <h1> {place.name}</h1>
+        <p> Address: {place.address}</p>
         <p> Bags left: {place.stock}</p>
         <p> Pick Up: {place.time}</p>
         <p> Price: {place.price}</p>
+        <p> Phone: {place.phone}</p>
+        <p> Email: {place.email}</p>
         <strong>
           <span
             onClick={() =>
@@ -84,18 +101,7 @@ class Restaurant extends React.Component {
             +{" "}
           </span>
         </strong>
-        <Button variant="outlined" size="small" onClick={() => handleClick()}>
-          Grab it
-        </Button>
-        <Snackbar
-          style={{ padding: "2rem" }}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          open={open}
-          message="KaAAAZZaaaaMMM!"
-          autoHideDuration={2000}
-          onClose={handleClose}
-          style={{ backgroundColor: "#ffccaa" }}
-        ></Snackbar>
+        <GrabIt placeId={place.id} order={order + place.amount} />
       </div>
     );
   }
@@ -105,6 +111,7 @@ class Restaurant extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
+    setPlace: (id) => dispatch(setPlace(id)),
     updatePlace: (placeId, stock, amount) =>
       dispatch(updatePlace(placeId, stock, amount)),
     // updateOrder: (placeId, amount, order) =>
